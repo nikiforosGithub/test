@@ -1,25 +1,22 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Linkedin } from "lucide-react";
+import { Dumbbell, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
     NavigationMenu,
     NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
+    NavigationMenuItem, NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { data } from '@/data/data';
-import pImage from '../app/assets/AA9B1786-D43B-43D4-BE44-F899F1805032_1_105_c.jpeg';
+import { programs } from '@/data/data';
 
-const ProjectCard = ({ title, description, icon, link, techStack, status }) => {
+const ProgramCard = ({ title, description, duration, intensity, link, price }) => {
     const router = useRouter();
 
     const handleNavigation = () => {
@@ -28,38 +25,20 @@ const ProjectCard = ({ title, description, icon, link, techStack, status }) => {
 
     return (
         <div
-            className="flex gap-4 p-4 rounded-lg hover:bg-accent transition-colors cursor-pointer group"
+            className="flex flex-col p-4 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer group"
             onClick={handleNavigation}
         >
-            <div className="flex-shrink-0">
-                <Image
-                    src={icon}
-                    alt={`${title} icon`}
-                    className="w-12 h-12 rounded-lg object-contain"
-                />
+            <div className="flex items-center justify-between gap-2 mb-2">
+                <h3 className="font-semibold text-lg text-gray-900">{title}</h3>
+                <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-200">
+                    {intensity}
+                </Badge>
             </div>
-            <div className="flex flex-col flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-semibold text-lg truncate">{title}</h3>
-                    <Badge variant={status === "Active" ? "default" : "secondary"} className="hidden group-hover:inline-flex">
-                        {status}
-                    </Badge>
-                </div>
-                <p className="text-muted-foreground text-sm line-clamp-2">{description}</p>
-                {techStack && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                        {techStack.slice(0, 3).map((tech, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                                {tech}
-                            </Badge>
-                        ))}
-                        {techStack.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
-                                +{techStack.length - 3}
-                            </Badge>
-                        )}
-                    </div>
-                )}
+            <p className="text-gray-600 text-sm mb-3">{description}</p>
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+                <span>{duration}</span>
+                <span>•</span>
+                <span>{price}/month</span>
             </div>
         </div>
     );
@@ -68,6 +47,7 @@ const ProjectCard = ({ title, description, icon, link, techStack, status }) => {
 export default function Header() {
     const router = useRouter();
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -79,69 +59,134 @@ export default function Header() {
     }, []);
 
     return (
-        <div className="fixed z-10 top-0 right-0 left-0 flex flex-row h-20 justify-center">
+        <div className={`fixed z-10 top-0 right-0 left-0 flex flex-row h-20 justify-center
+        ${isScrolled ? 'shadow-lg bg-white/90 backdrop-blur-md ' : ''}`}>
             <div
-                className={`p-4 flex flex-row w-full sm:mx-4 bg-background/80 rounded-lg rounded-t-none 
-        border border-border border-t-0 backdrop-blur-md items-center justify-between
-        ${isScrolled ? 'shadow-lg' : ''}`}
+                className={`p-4 flex flex-row w-full mx-auto max-w-7xl items-center justify-between
+                 transition-all duration-200`}
             >
-                <NavigationMenu>
-                    <NavigationMenuList>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger className={`bg-transparent`}>Projects</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <div className="w-[90vw] md:w-[700px] lg:w-[768px] p-4">
-                                    <div className="flex items-center justify-between mb-4 px-2">
-                                        <h2 className="text-lg font-semibold">Featured Projects</h2>
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            className="text-primary"
-                                            onClick={() => router.push("/projects")}
-                                        >
-                                            View All
-                                            <ExternalLink className="ml-2 h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                    <div className="grid gap-2 md:grid-cols-2 max-h-[600px] overflow-y-auto">
-                                        {data.map((project) => (
-                                            <ProjectCard
-                                                key={project.id}
-                                                title={project.title}
-                                                description={project.description}
-                                                icon={project.icon}
-                                                link={project.link}
-                                                techStack={project.techStack}
-                                                status={project.status}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <Link href="/" legacyBehavior passHref>
-                                <NavigationMenuLink className={`bg-transparent ${navigationMenuTriggerStyle()}`} >
-                                    About me
-                                </NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                    </NavigationMenuList>
-                </NavigationMenu>
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-2">
+                    <Dumbbell className="h-8 w-8 text-blue-600" />
+                    <span className="font-bold text-xl text-gray-900">FitPro</span>
+                </Link>
 
-                <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon">
-                        <Github className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                        <Linkedin className="h-5 w-5" />
-                    </Button>
-                    <Image
-                        src={pImage}
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full object-cover"
-                    />
+                {/* Desktop Navigation */}
+                <div className="hidden md:block">
+                    <NavigationMenu>
+                        <NavigationMenuList>
+                            <NavigationMenuItem>
+                                <NavigationMenuTrigger
+                                    className="bg-transparent hover:bg-blue-50 text-gray-700"
+                                >
+                                    Programs
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <div className="w-[600px] p-4">
+                                        <div className="flex items-center justify-between mb-4 px-2">
+                                            <h2 className="text-lg font-semibold text-gray-900">Our Programs</h2>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                                onClick={() => router.push("/programs")}
+                                            >
+                                                View All Programs
+                                            </Button>
+                                        </div>
+                                        <div className="grid gap-2">
+                                            {programs.map((program) => (
+                                                <ProgramCard
+                                                    key={program.id}
+                                                    title={program.title}
+                                                    description={program.description}
+                                                    duration={program.duration}
+                                                    intensity={program.intensity}
+                                                    link={program.link}
+                                                    price={program.price}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/about" legacyBehavior passHref>
+                                    <NavigationMenuLink
+                                        className={`bg-transparent hover:bg-blue-50 text-gray-700 ${navigationMenuTriggerStyle()}`}
+                                    >
+                                        About
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/contact" legacyBehavior passHref>
+                                    <NavigationMenuLink
+                                        className={`bg-transparent hover:bg-blue-50 text-gray-700 ${navigationMenuTriggerStyle()}`}
+                                    >
+                                        Contact
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
+                        </NavigationMenuList>
+                    </NavigationMenu>
                 </div>
+
+                {/* CTA Button */}
+                <div className="flex items-center gap-4">
+                    <Button
+                        className="bg-blue-600 hover:bg-blue-700 hidden md:flex"
+                        onClick={() => router.push("/contact")}
+                    >
+                        Start Now
+                    </Button>
+
+                    {/* Mobile Menu Button */}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="md:hidden"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? (
+                            <X className="h-6 w-6" />
+                        ) : (
+                            <Menu className="h-6 w-6" />
+                        )}
+                    </Button>
+                </div>
+
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="absolute top-full left-0 right-0 bg-white border-t border-gray-200 md:hidden">
+                        <nav className="flex flex-col p-4">
+                            <Link
+                                href="/programs"
+                                className="px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg"
+                            >
+                                Programs
+                            </Link>
+                            <Link
+                                href="/about"
+                                className="px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg"
+                            >
+                                About
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className="px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg"
+                            >
+                                Contact
+                            </Link>
+                            <Button
+                                className="bg-blue-600 hover:bg-blue-700 mt-4"
+                                onClick={() => router.push("/contact")}
+                            >
+                                Start Now
+                            </Button>
+                        </nav>
+                    </div>
+                )}
             </div>
         </div>
     );

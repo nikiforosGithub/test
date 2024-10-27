@@ -3,6 +3,6 @@ import {programs} from "@/data/data";
 
 
 export default function Page(){
-    const program = programs[2]
+    const program = programs[1]
     return(<ProgramDetail program={program}/>)
 }

@@ -177,7 +177,7 @@ const ProgramCard = ({ program }) => {
         </CardContent>
         <CardFooter className="pt-6">
           <Button
-              className={`w-full ${program.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} asChild
+              className={`w-full ${program.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
               onClick={() => {router.push(program.link)}}
           >
 

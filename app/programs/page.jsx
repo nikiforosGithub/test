@@ -114,7 +114,7 @@ const MobileProgramCard = ({ program }) => {
             </Accordion>
         </CardContent>
         <CardFooter>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild onClick={() => {router.push(program.link)}}>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => {router.push(program.link)}}>
                 Get Started
             </Button>
         </CardFooter>

@@ -184,7 +184,9 @@ const faqCategories = {
     "Program Details": faq.slice(3, 6),
     "Support & Guidance": faq.slice(6)
 };
-const ProgramComparison = () => (
+const ProgramComparison = () => {
+    const router = useRouter();
+    return (
     <div className="overflow-x-auto">
         <table className="w-full border-collapse">
             <thead>
@@ -242,17 +244,17 @@ const ProgramComparison = () => (
                     <td key={program.id} className="py-4 px-6 text-center">
                         <Button
                             className="bg-blue-600 hover:bg-blue-700"
-                            asChild
+                            onClick = { () => router.push(program.link)}
                         >
-                            <a href={program.link}>Choose Plan</a>
+                           Choose Plan
                         </Button>
                     </td>
                 ))}
             </tr>
             </tbody>
         </table>
-    </div>
-);
+    </div>);
+};
 
 const ProgressChart = ({ program }) => (
     <div className="h-[300px] w-full">

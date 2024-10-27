@@ -26,9 +26,12 @@ import {
 import { programs, faq } from '@/data/data';
 import PageLayout from "@/mycomps/PageLayout";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {useRouter} from "next/navigation";
 
 // Mobile Program Card Component
-const MobileProgramCard = ({ program }) => (
+const MobileProgramCard = ({ program }) => {
+    const router = useRouter();
+    return(
     <Card className="mb-4">
         <CardHeader>
             <div className="flex justify-between items-start">
@@ -111,12 +114,13 @@ const MobileProgramCard = ({ program }) => (
             </Accordion>
         </CardContent>
         <CardFooter>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
-                <a href={program.link}>Get Started</a>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild onClick={() => {router.push(program.link)}}>
+                Get Started
             </Button>
         </CardFooter>
     </Card>
-);
+    )
+};
 
 // Program Comparison Sheet for Mobile
 const MobileComparisonSheet = () => (

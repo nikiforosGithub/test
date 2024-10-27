@@ -142,6 +142,7 @@ const ReviewSection = () => {
 };
 
 const ProgramCard = ({ program }) => {
+  const router = useRouter();
   return (
       <Card className={`relative h-full flex flex-col ${program.featured ? 'border-blue-500 shadow-xl' : 'shadow-lg'}`}>
         {program.featured && (
@@ -177,10 +178,11 @@ const ProgramCard = ({ program }) => {
         <CardFooter className="pt-6">
           <Button
               className={`w-full ${program.featured ? 'bg-blue-600 hover:bg-blue-700' : ''}`} asChild
+              onClick={() => {router.push(program.link)}}
           >
-            <a href={program.link} >
+
               Get Started
-            </a>
+
 
           </Button>
         </CardFooter>
